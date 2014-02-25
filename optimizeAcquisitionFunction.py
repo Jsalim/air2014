@@ -3,7 +3,7 @@
 import numpy as np
 
 
-#X=box t=current timestep D=data
+#X=box t=current timestep D=No. of features
 def optimizeAcquisitionFunction(t,X,D):
 
 	#initialize the max
