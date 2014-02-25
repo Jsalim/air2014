@@ -1,0 +1,4 @@
+- how does the Y subset practically look?
+- does the Y subset from step 2 use the A-matrix from step 1?
+- how does DBGD make use of step 1 and step 2? Are we moving our smaller d dimensional feature vector to some direction and compare it to the old version using a click model?
+- how do you choose which features are d and which are D-d? So, if we have d=4, and y=[0.5,0.5,0.5,0.5], which of the 64 features do we use y for?
