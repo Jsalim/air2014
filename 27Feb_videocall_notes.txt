@@ -1,0 +1,39 @@
+d = 3
+D = 64 (initial)
+
+Step 1:
+A = random sample Gaussian normal
+64 rows, 3 cols
+
+Step 2:
+Y = box centred around 0
+-1 -1 -1 -1 1 1 1 1
+better if range between -sqrt(d) en sqrt(d)
+
+EXAMPLE: Y = 3 x (10^3) if boxrange = [0,1] and discretized with 0.1
+EXAMPLE: discretize ! -swrt(3),sqrt(3), finegrid on it! .0001,.0002,.0003,.0004,.0005,.0006
+
+Step 4:
+acquisiton function U = taken from (Srinivas et al., 2010) http://arxiv.org/pdf/0912.3995.pdf 
+It can be found on 3rd line in algorithm page 4 (or equation 6)
+*mu/sigma on page 3 of that paper (equation.1/2)
+- size of k grows linearly with time ?? (I, Reinier, didn't get this but he mentioned it)
+- lowercase, bold k = vector values function, depends on K (which can be found on the top right of page 5 of the REMBO paper)
+- K (kernel) for mu/sigma will be from the REMBO paper
+- in equation 1, sigma without time unit 9no subscript) should be set to: 0.01/0.001
+*beta = constant, dependent on time. It is defined in theorem 2 page 5 (Reinier got half of this, Fred didn't understand it at all)
+- delta = chosen 1/100,1/10, 
+- a,b = 1
+- r = 1 (if range Y is [0,1])
+
+Step 5:
+Keep track of points sampled thus far and  
+the values seen at those points; keep  
+them in array or something
+
+bold y in REMBO paper is same thing as  
+bold x in shrivendel et al paper -  
+mismatches in variables in papers
+
+Step 6:
+Ignore
