@@ -1,13 +1,17 @@
 #air 2014 group 5. (REMBO)
-
-#step 1: generate a random matrix
 import create_random_matrix as crm
+import chooseBoundedRegion as cbr
+
 D = 64 #number of features?
 d = 3 #parameter
+regionBound = sqrt(d)
+regionBoundStepSize = 0.01
 
-print crm.random_matrix(D,d)
+#step 1: generate a random matrix
+A = crm.random_matrix(D,d)
 
-
+#step 2:choose the bounded region
+Y = cbr.chooseBoundedRegion(d,regionBound,regionBound,regionBoundStepSize)
 
 #paris - this code is general (doesnt compile)
 
@@ -25,8 +29,6 @@ for (each d we experiment with):
 
 #end paris code
 
-
-#step2:choose the bounding region.
 
 
 
