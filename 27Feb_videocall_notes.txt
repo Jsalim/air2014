@@ -20,7 +20,7 @@ It can be found on 3rd line in algorithm page 4 (or equation 6)
 - size of k grows linearly with time ?? (I, Reinier, didn't get this but he mentioned it)
 - lowercase, bold k = vector values function, depends on K (which can be found on the top right of page 5 of the REMBO paper)
 - K (kernel) for mu/sigma will be from the REMBO paper
-- in equation 1, sigma without time unit 9no subscript) should be set to: 0.01/0.001
+- in equation 1, sigma without time unit (no subscript) should be set to: 0.01/0.001
 *beta = constant, dependent on time. It is defined in theorem 2 page 5 (Reinier got half of this, Fred didn't understand it at all)
 - delta = chosen 1/100,1/10, 
 - a,b = 1
