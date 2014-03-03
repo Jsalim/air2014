@@ -45,6 +45,16 @@ def acquisition(Y,A,d):
     return y
 
 
+# Function to select test set from bounded box
+def select_test_set(n_test, Y):
+  test_set = []
+
+  for i in xrange(0, n_test):
+    idx = np.random.randint(0, len(Y))
+    test_set.append(Y[idx])
+
+  return np.matrix(test_set)
+
 # Function to return noisy sample
 # GP Paper page 3
 def sample_training_output(xtrain):
@@ -56,13 +66,17 @@ def f_func(x):
 # Function to calculate GP Posterior
 # It returns predictive mean and variance
 # REMBO paper page 3
-def gp_posterior(xtrain, xtest, ytrain, sigma_0, n_test):
+def gp_posterior(xtrain, xtest, ytrain, sigma_0, n_test, A):
   mu = []
   sigma = []
 
   for i in xrange(0, n_test):
-    temp_mu = sqexp_kernel(xtest[i], xtrain) * sqexp_kernel(xtrain, xtrain).I * ytrain
-    temp_sigma = sqexp_kernel(xtest[i], xtest[i]) - (sqexp_kernel(xtest[i], xtrain) * sqexp_kernel(xtrain, xtrain).I * sqexp_kernel(xtrain, xtest[i]))
+    test = A * xtest[i].T
+    test = test.T
+    train = xtrain
+
+    temp_mu = sqexp_kernel(test, train) * sqexp_kernel(train, train).I * ytrain
+    temp_sigma = sqexp_kernel(test, test) - (sqexp_kernel(test, train) * sqexp_kernel(train, train).I * sqexp_kernel(train, test))
     mu.append(temp_mu)
     sigma.append(temp_sigma)
 
@@ -96,7 +110,10 @@ def gp_optimize(xtest, t, d, mu, sigma, n_test):
   best_index = np.argmax(ycandidates)
   return xtest[best_index]
 
-def augment_data(xtrain, ytrain, xbest):
-  xtrain = np.concatenate((xtrain, xbest), 0)
-  ytrain = np.concatenate((ytrain, f_func(xbest)), 0)
+def augment_data(xtrain, ytrain, xbest, A):
+  train = A * xbest.T
+  train = train.T
+
+  xtrain = np.concatenate((xtrain, train), 0)
+  ytrain = np.concatenate((ytrain, f_func(train)), 0)
   return xtrain, ytrain
