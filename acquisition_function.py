@@ -8,17 +8,6 @@ import math
 
 l = 1
 
-def get_kT():
-  return false
-
-
-def get_KT(y1, y2):
-    #y1 = yt, y2 = yt+1 ; could be the other way around
-    return np.exp((-(np.abs(np.subtract(y1,y2)))**2)/(2*l**2))
-
-def get_yt():
-  return false
-
 
 def get_beta(t,d):
     delta = 0.01
@@ -31,19 +20,6 @@ def get_beta(t,d):
     beta = 2*np.log(t**2*r*math.pi**2/(3*delta)) + 2*d*np.log(t**2*d*b*r*math.sqrt(np.log(4*d*a/delta)))
     return beta
 
-def get_sigma():
-    return get_kT()**2
-
-def get_mu():
-    get_kT() * (get_KT + sigma**2)^(-1)* get_yt() #*y_t
-    return #something
-
-def acquisition(Y,A,d):
-    # each function that is called should still get the proper input,
-    # we don't know what that should be yet
-    yt = np.argmax(get_mu() + math.sqrt(get_beta())*get_sigma())
-
-    return y
 
 
 # Function to select test set from bounded box
@@ -67,17 +43,24 @@ def f_func(x):
 # Function to calculate GP Posterior
 # It returns predictive mean and variance
 # REMBO paper page 3
-def gp_posterior(xtrain, xtest, ytrain, sigma_0, n_test, A):
-  mu = []
-  sigma = []
+def gp_posterior(data_old, sigma_old, Y, ytrain, sigma_0, n_test, A):
 
-  for i in xrange(0, n_test):
-    test = A * xtest[i].T
+  mu =[]
+  sigma=[]
+
+  for i in xrange(0, len(Y)):
+    test = A * Y[i].T
     test = test.T
-    train = xtrain
+    train = data_old
 
-    temp_mu = sqexp_kernel(test, train) * sqexp_kernel(train, train).I * ytrain
+    temp_mu 
+
+    temp_mu =  ????* np.linalg.inv(sigma_old) * ytrain
     temp_sigma = sqexp_kernel(test, test) - (sqexp_kernel(test, train) * sqexp_kernel(train, train).I * sqexp_kernel(train, test))
+    
+      #call the aqcuisition function here, and find argmax.
+      #using temp_§mu and temp_sigma
+
     mu.append(temp_mu)
     sigma.append(temp_sigma)
 

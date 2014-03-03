@@ -11,7 +11,7 @@ D = 10 # number of features
 d = 3 # reducted dimension
 
 n_training = 10
-n_test = 100
+n_test = 1
 max_iter = 1000 # maximum number of iterations
 sigma_0 = 0.1
 
@@ -32,13 +32,17 @@ A = crm.random_matrix(D, d)
 # Choose bounded region set
 Y = cbr.chooseBoundedRegion(d, -regionBound, regionBound, regionBoundStepSize)
 
+#define initial mu and sigma
+mu =0
+sigma = 1 
 # Step 3 - 6
 for t in range(0, max_iter):
   # Select points from bounded box to be tested
-  ytest = acq.select_test_set(n_test, Y)
+  ytest =Y
+  #ytest = acq.select_test_set(n_test, Y)
 
   # Get mu and sigma
-  mu, sigma = acq.gp_posterior(ytrain, ytest, fytrain, sigma_0, n_test, A)
+  mu, sigma = acq.gp_posterior(ytrain,sigma, ytest, fytrain, sigma_0, n_test, A)
 
   # Find ybest
   ybest = acq.gp_optimize(ytest, t, D, mu, sigma, n_test)
