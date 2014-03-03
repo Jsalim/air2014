@@ -5,6 +5,7 @@ import math
 # see REMBO paper page 5 definition 4
 # l = length scale > 0
 # defined at first run, should be tuned
+
 l = 1
 
 def get_kT():
