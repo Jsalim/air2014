@@ -50,8 +50,8 @@ def gp_posterior(data_old, sigma_old, Y, ytrain, A, t, d):
   candidates=[]
 
   for i in xrange(0, len(Y)):
-    row = np.matrix(Y[i])
-    test = A * row.T
+    row = Y[i]
+    test = A * np.transpose(row)
     test = test.T
     train = data_old
 
@@ -73,7 +73,6 @@ def gp_posterior(data_old, sigma_old, Y, ytrain, A, t, d):
     # temp = np.matrix(temp)
     # temp = temp.T
     # temp_sigma = np.append(temp_sigma, temp, 0)
-    print temp_sigma
     # temp_sigma[:,t+1] = [k_vector[len(k_vector)-1].T]
 
 
@@ -87,14 +86,19 @@ def gp_posterior(data_old, sigma_old, Y, ytrain, A, t, d):
     #call the aqcuisition function here, and find argmax.
     #using temp_mu and temp_sigma
     candidate = gp_optimize(t, d, temp_mu, temp_sigma)
+    print candidate
     candidates.append(candidate)
 
-    # Find the best candidate
-    best_index = np.argmax(ycandidates)
-    ybest = test[best_index]
 
     mu.append(temp_mu)
     sigma.append(temp_sigma)
+
+  # Find the best candidate
+  print len(candidates)
+  print len(Y)
+  best_index = np.argmax(candidates)
+  print best_index
+  ybest = Y[best_index]
 
   return mu, sigma, ybest
 
@@ -136,7 +140,7 @@ def gp_optimize(t, d, mu, sigma):
   t = t + 1
   # ycandidates = []
 
-  return mu[i] + math.sqrt(get_beta(t, d)) * sigma[i]
+  return mu + math.sqrt(get_beta(t, d)) * sigma
   # temp_y = mu[i] + math.sqrt(get_beta(t, d)) * sigma[i]
   # ycandidates.append(temp_y)
 

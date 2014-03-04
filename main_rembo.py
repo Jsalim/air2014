@@ -49,6 +49,6 @@ for t in range(0, max_iter):
   # ybest = acq.gp_optimize(ytest, t, D, mu, sigma, n_test)
 
   # Augment the data
-  ytrain, fytrain = acq.augment_data(ytrain, fytrain, ybest, A)
+  # ytrain, fytrain = acq.augment_data(ytrain, fytrain, ybest, A)
 
   print ybest
