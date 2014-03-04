@@ -60,7 +60,7 @@ def gp_posterior(data_old, sigma_old, Y, ytrain, A, t, d):
     temp_sigma = sigma_old
     k_vector = []
     for j in range(0,t+1):
-      k_vector.append(sqexp_kernel(data_old[j],test))
+      k_vector=np.append(k_vector,sqexp_kernel(data_old[j],test))
 
 
     #add new line and column to the COV matrix.
@@ -86,7 +86,7 @@ def gp_posterior(data_old, sigma_old, Y, ytrain, A, t, d):
 
     #call the aqcuisition function here, and find argmax.
     #using temp_mu and temp_sigma
-    candidate = gp_optimize(test, t, d, temp_mu, temp_sigma)
+    candidate = gp_optimize(t, d, temp_mu, temp_sigma)
     candidates.append(candidate)
 
     # Find the best candidate
