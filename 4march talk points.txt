@@ -1,5 +1,23 @@
+
+
+
 REMBO paper: project data to fit the box Y. However, our data always seems to be in between –sqrt(d) and sqrt(d) anyway so projection is not necessary with the current data. We plan to implement projection to box Y as the data needs it.
 
 Always runs for 1000 iteration right now, we should add convergence as a termination criterion eventually.
 
 Constants a and b in the equation for beta: what should they be? Same for r in the same equation, and the length scale l (L).
+
+
+a,b==1 R = length(boxSide) δ = 0.01
+
+
+
+
+0) assignment + set up server.
+
+1) understand the theory.
+2) try to implement rembo.
+	2.1) understand the variables and their usage
+	2.2) 
+3) + use rembo in our case
+4) + incorporate Lerot

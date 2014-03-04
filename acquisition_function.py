@@ -43,7 +43,7 @@ def f_func(x):
 # Function to calculate GP Posterior
 # It returns predictive mean and variance
 # REMBO paper page 3
-def gp_posterior(data_old, sigma_old, Y, ytrain, sigma_0, n_test, A):
+def gp_posterior(data_old, sigma_old, Y, ytrain, sigma_0, n_test, A, t):
 
   mu =[]
   sigma=[]
@@ -53,10 +53,24 @@ def gp_posterior(data_old, sigma_old, Y, ytrain, sigma_0, n_test, A):
     test = test.T
     train = data_old
 
-    temp_mu 
 
-    temp_mu =  ????* np.linalg.inv(sigma_old) * ytrain
-    temp_sigma = sqexp_kernel(test, test) - (sqexp_kernel(test, train) * sqexp_kernel(train, train).I * sqexp_kernel(train, test))
+    #compute the k vector according to the third paper page 8.
+    temp_sigma = sigma_old
+    for j in range(0,t):
+      k_vector[j] = sqexp_kernel(data_old[j],test)
+
+
+    #add new line and column to the COV matrix.  
+    temp_sigma[t+1,:] = k_vector
+    temp_sigma[:,t+1] = k_vector.T
+    temp_sigma[t+1,t+1] =  sqexp_kernel(test,test)
+
+    
+
+
+    #calculate μ and Σ according to the rembo paper.
+    temp_mu =  k_vector.T* np.linalg.inv(sigma_old) * ytrain
+    temp_sigma = sqexp_kernel(test, test) - k_vector.T * np.linalg.inv(sigma_old) * k_vector
     
       #call the aqcuisition function here, and find argmax.
       #using temp_§mu and temp_sigma
@@ -65,6 +79,21 @@ def gp_posterior(data_old, sigma_old, Y, ytrain, sigma_0, n_test, A):
     sigma.append(temp_sigma)
 
   return mu, sigma
+
+
+#given a point y outside Y, find its projection in Y
+def projection(Y,y):
+  dist  = 10000
+  min_z = Y[1]
+  for i in range(0,len(Y)):
+    z = Y[i];
+    temp_dist = numpy.linalg.norm(y-z)
+    if temp_dist<dist:
+      dist=temp_dist
+      min_z=Y[i]
+  return min_z
+
+
 
 
 # Function squared exponential kernel a.k.a radial basis function kernel

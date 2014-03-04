@@ -42,7 +42,7 @@ for t in range(0, max_iter):
   #ytest = acq.select_test_set(n_test, Y)
 
   # Get mu and sigma
-  mu, sigma = acq.gp_posterior(ytrain,sigma, ytest, fytrain, sigma_0, n_test, A)
+  mu, sigma = acq.gp_posterior(ytrain, sigma, ytest, sigma_0, n_test, A, t)
 
   # Find ybest
   ybest = acq.gp_optimize(ytest, t, D, mu, sigma, n_test)
