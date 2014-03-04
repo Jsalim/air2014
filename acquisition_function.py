@@ -43,42 +43,60 @@ def f_func(x):
 # Function to calculate GP Posterior
 # It returns predictive mean and variance
 # REMBO paper page 3
-def gp_posterior(data_old, sigma_old, Y, ytrain, sigma_0, n_test, A, t):
+def gp_posterior(data_old, sigma_old, Y, ytrain, A, t, d):
 
   mu =[]
   sigma=[]
+  candidates=[]
 
   for i in xrange(0, len(Y)):
-    test = A * Y[i].T
+    row = np.matrix(Y[i])
+    test = A * row.T
     test = test.T
     train = data_old
 
 
     #compute the k vector according to the third paper page 8.
     temp_sigma = sigma_old
-    for j in range(0,t):
-      k_vector[j] = sqexp_kernel(data_old[j],test)
+    k_vector = []
+    for j in range(0,t+1):
+      k_vector.append(sqexp_kernel(data_old[j],test))
 
 
-    #add new line and column to the COV matrix.  
-    temp_sigma[t+1,:] = k_vector
-    temp_sigma[:,t+1] = k_vector.T
-    temp_sigma[t+1,t+1] =  sqexp_kernel(test,test)
+    #add new line and column to the COV matrix.
+    # This code is only working for t = 0
+    # Need to be rewriting
+    temp_sigma = np.append(temp_sigma, np.matrix(k_vector), 0)
+    # temp_sigma[t+1,t+1] =  sqexp_kernel(test,test)
+    temp = np.append(k_vector, [sqexp_kernel(test, test)], 0)
+    temp_sigma = np.append(temp_sigma, [k_vector, [sqexp_kernel(test, test)]], 1)
+    # temp = np.matrix(temp)
+    # temp = temp.T
+    # temp_sigma = np.append(temp_sigma, temp, 0)
+    print temp_sigma
+    # temp_sigma[:,t+1] = [k_vector[len(k_vector)-1].T]
 
-    
 
 
-    #calculate μ and Σ according to the rembo paper.
+
+    #calculate mu and sigma according to the rembo paper.
+    # This code is still not working
     temp_mu =  k_vector.T* np.linalg.inv(sigma_old) * ytrain
     temp_sigma = sqexp_kernel(test, test) - k_vector.T * np.linalg.inv(sigma_old) * k_vector
-    
-      #call the aqcuisition function here, and find argmax.
-      #using temp_§mu and temp_sigma
+
+    #call the aqcuisition function here, and find argmax.
+    #using temp_mu and temp_sigma
+    candidate = gp_optimize(test, t, d, temp_mu, temp_sigma)
+    candidates.append(candidate)
+
+    # Find the best candidate
+    best_index = np.argmax(ycandidates)
+    ybest = test[best_index]
 
     mu.append(temp_mu)
     sigma.append(temp_sigma)
 
-  return mu, sigma
+  return mu, sigma, ybest
 
 
 #given a point y outside Y, find its projection in Y
@@ -106,22 +124,24 @@ def sqexp_kernel(y1, y2):
   # we are using squared euclidan distance
   # http://mlg.eng.cam.ac.uk/duvenaud/cookbook/index.html
   # http://en.wikipedia.org/wiki/Radial_basis_function_kernel
-  distance = sp.cdist(y1, y2, 'sqeuclidean')
+  distance = sp.euclidean(y1, y2)
   k = np.exp(-(distance/2*(l**2)))
-  return np.matrix(k)
+  # return np.matrix(k)
+  return k
 
 # Acquisition Function
 # GP-UCB Algorithm
 # GP Paper page 4
-def gp_optimize(xtest, t, d, mu, sigma, n_test):
+def gp_optimize(t, d, mu, sigma):
   t = t + 1
-  ycandidates = []
+  # ycandidates = []
 
-  for i in xrange(0, n_test):
-    temp_y = mu[i] + math.sqrt(get_beta(t, d)) * sigma[i]
-    ycandidates.append(temp_y)
-  best_index = np.argmax(ycandidates)
-  return xtest[best_index]
+  return mu[i] + math.sqrt(get_beta(t, d)) * sigma[i]
+  # temp_y = mu[i] + math.sqrt(get_beta(t, d)) * sigma[i]
+  # ycandidates.append(temp_y)
+
+  # best_index = np.argmax(ycandidates)
+  # return xtest[best_index]
 
 def augment_data(xtrain, ytrain, xbest, A):
   train = A * xbest.T
