@@ -51,32 +51,25 @@ def gp_posterior(data_old, sigma_old, Y, ytrain, A, t, d):
 
   for i in xrange(0, len(Y)):
     row = Y[i]
-    test = A * np.transpose(row)
+    test = np.dot(A,row)
     test = test.T
     train = data_old
-
 
     #compute the k vector according to the third paper page 8.
     temp_sigma = sigma_old
     k_vector = []
+
     for j in range(0,t+1):
       k_vector=np.append(k_vector,sqexp_kernel(data_old[j],test))
 
-
     #add new line and column to the COV matrix.
-    # This code is only working for t = 0
-    # Need to be rewriting
-    temp_sigma = np.append(temp_sigma, np.matrix(k_vector), 0)
-    # temp_sigma[t+1,t+1] =  sqexp_kernel(test,test)
+    temp_sigma = np.append(temp_sigma, np.matrix(k_vector), 1)
     temp = np.append(k_vector, [sqexp_kernel(test, test)], 0)
-    temp_sigma = np.append(temp_sigma, [k_vector, [sqexp_kernel(test, test)]], 1)
+    temp_sigma = np.append(temp_sigma, np.matrix(temp), 0)
     # temp = np.matrix(temp)
     # temp = temp.T
     # temp_sigma = np.append(temp_sigma, temp, 0)
     # temp_sigma[:,t+1] = [k_vector[len(k_vector)-1].T]
-
-
-
 
     #calculate mu and sigma according to the rembo paper.
     # This code is still not working

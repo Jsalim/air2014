@@ -34,7 +34,7 @@ Y = cbr.chooseBoundedRegion(d, -regionBound, regionBound, regionBoundStepSize)
 
 #define initial mu and sigma
 mu =0
-sigma = [[1]]
+sigma = np.matrix(1)
 
 # Step 3 - 6
 for t in range(0, max_iter):
