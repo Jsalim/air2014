@@ -49,7 +49,8 @@ def gp_posterior(data_old, sigma_old, Y, ytrain, A, t, d):
   sigma=[]
   candidates=[]
 
-  for i in xrange(0, len(Y)):
+  for i in range(0, len(Y)):
+  # for i in xrange(0, 5):
     row = Y[i]
     test = np.dot(A,row)
     test = test.T
@@ -59,13 +60,23 @@ def gp_posterior(data_old, sigma_old, Y, ytrain, A, t, d):
     temp_sigma = sigma_old
     k_vector = []
 
-    for j in range(0,t+1):
-      k_vector=np.append(k_vector,sqexp_kernel(data_old[j],test))
+    # temp_sigma = np.zeros(shape=(5,5))
+    for j in range(0, (t+1)):
+      k_vector = np.append(k_vector,sqexp_kernel(data_old[j],test))
+    # print k_vector
 
     #add new line and column to the COV matrix.
-    temp_sigma = np.append(temp_sigma, np.matrix(k_vector), 1)
+    print temp_sigma
+    print np.matrix(k_vector)
+    temp_sigma = np.append(temp_sigma, np.matrix(k_vector), 0)
+    # print temp_sigma;
+    # print "==========";
+
     temp = np.append(k_vector, [sqexp_kernel(test, test)], 0)
-    temp_sigma = np.append(temp_sigma, np.matrix(temp), 0)
+    # print temp;
+    temp_sigma = np.append(temp_sigma, np.matrix(temp).T, 1)
+    # print temp_sigma;
+
     # temp = np.matrix(temp)
     # temp = temp.T
     # temp_sigma = np.append(temp_sigma, temp, 0)
@@ -73,13 +84,26 @@ def gp_posterior(data_old, sigma_old, Y, ytrain, A, t, d):
 
     #calculate mu and sigma according to the rembo paper.
     # This code is still not working
-    temp_mu =  k_vector.T* np.linalg.inv(sigma_old) * ytrain
-    temp_sigma = sqexp_kernel(test, test) - k_vector.T * np.linalg.inv(sigma_old) * k_vector
+    # print k_vector
+    # print "==========";
+    # print np.linalg.inv(sigma_old)
+    # print "==========";
+    # print ytrain
+    # print "==========";
+    temp_mu =  k_vector * np.linalg.inv(sigma_old) * ytrain
+    # print temp_mu
+    # temp_sigma = sqexp_kernel(test, test) - k_vector.T * np.linalg.inv(sigma_old) * k_vector
+
+    # print "==========";
+    # print temp_sigma;
+    # print "==========";
 
     #call the aqcuisition function here, and find argmax.
     #using temp_mu and temp_sigma
-    candidate = gp_optimize(t, d, temp_mu, temp_sigma)
-    print candidate
+    variance = sqexp_kernel(row, row)
+    # print variance
+
+    candidate = gp_optimize(t, d, temp_mu, 1)
     candidates.append(candidate)
 
 
@@ -87,8 +111,8 @@ def gp_posterior(data_old, sigma_old, Y, ytrain, A, t, d):
     sigma.append(temp_sigma)
 
   # Find the best candidate
-  print len(candidates)
-  print len(Y)
+  # print len(candidates)
+  # print len(Y)
   best_index = np.argmax(candidates)
   print best_index
   ybest = Y[best_index]
@@ -132,6 +156,12 @@ def sqexp_kernel(y1, y2):
 def gp_optimize(t, d, mu, sigma):
   t = t + 1
   # ycandidates = []
+
+  mu = np.average(mu)
+  # print "=========="
+  # print math.sqrt(get_beta(t,d))
+  # print "=========="
+  # print sigma
 
   return mu + math.sqrt(get_beta(t, d)) * sigma
   # temp_y = mu[i] + math.sqrt(get_beta(t, d)) * sigma[i]
