@@ -12,11 +12,11 @@ d = 3 # reducted dimension
 
 n_training = 10
 n_test = 1
-max_iter = 1 # maximum number of iterations
+max_iter = 5 # maximum number of iterations
 sigma_0 = 0.1
 
 regionBound = math.sqrt(d)
-regionBoundStepSize = 0.1
+regionBoundStepSize = 0.5
 
 
 # Sample training input and ouput

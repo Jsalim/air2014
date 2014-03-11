@@ -1,0 +1,51 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Advanced Information Retrieval. REMBO Algorithm}
+\author{Jerome Cremers}
+\date{March 2014}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+-rembo\\
+-lerot\\
+
+In this report, we analyze our own implementation of the Random EMbedding Bayesian Optimazation (REMBO) algorithm \cite{xu2007adarank}. REMBO overcomes the issue of general Bayesian optimization approaches being restricted to problems of moderate dimensions. 
+
+
+\section{Theoretical background}
+- Explanation of how REMBO works
+- Explanation of learning to rank models and their application
+    Explanation of how lerot works
+
+\section{Experimental design}
+
+Evaluation: comparison between lerot which just uses all feature vectors as is
+
+VS
+
+using REMBO on the feature vectors first to reduce the dimensions and running lerot on that
+
+Look out: CPU time / iterations required (depends on how iterations work, ask Masrour)
+
+The next evaluations we could try are comparing different setups (parameters) of REMBO to each other and the baseline lerot without REMBO. For example:
+
+k=1 vs k>1 interleaved runs comparison
+
+d=2,4,6,etc comparison
+
+Fineness of grid Y comparison (0.01, 0.001, 0.0001 etc)
+
+\section{Results}
+
+\section{Discussion}
+
+\section{Conclusion}
+
+\bibliographystyle{unsrt}%Used BibTeX style is unsrt
+\bibliography{references}
+
+\end{document}

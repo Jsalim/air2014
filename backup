@@ -49,6 +49,7 @@ def gp_posterior(sigma_old, Y, fY, y, A, t, d):
   sigma=[]
   candidates=[]
 
+<<<<<<< HEAD
   K = np.array([t,t])
   for ind in range(t):
     for jnd in range(t):
@@ -59,11 +60,20 @@ def gp_posterior(sigma_old, Y, fY, y, A, t, d):
     y = Y[i]
     x = np.dot(A,y)
     x = x.T
+=======
+  for i in range(0, len(Y)):
+  # for i in xrange(0, 5):
+    row = Y[i]
+    test = np.dot(A,row)
+    test = test.T
+    train = data_old
+>>>>>>> FETCH_HEAD
 
     #compute the k vector according to the third paper page 8.
     temp_sigma = sigma_old
     k_vector = []
 
+<<<<<<< HEAD
     for j in range(0,t+1):
       k_vector=np.append(k_vector,sqexp_kernel(Y[j],y))
 
@@ -71,7 +81,25 @@ def gp_posterior(sigma_old, Y, fY, y, A, t, d):
     # temp_sigma = np.append(temp_sigma, np.matrix(k_vector), 1)
     # temp = np.append(k_vector, [sqexp_kernel(x, x)], 0)
     # temp_sigma = np.append(temp_sigma, np.matrix(temp), 0)
+=======
+    # temp_sigma = np.zeros(shape=(5,5))
+    for j in range(0, (t+1)):
+      k_vector = np.append(k_vector,sqexp_kernel(data_old[j],test))
+    # print k_vector
 
+    #add new line and column to the COV matrix.
+    print temp_sigma
+    print np.matrix(k_vector)
+    temp_sigma = np.append(temp_sigma, np.matrix(k_vector), 0)
+    # print temp_sigma;
+    # print "==========";
+
+    temp = np.append(k_vector, [sqexp_kernel(test, test)], 0)
+    # print temp;
+    temp_sigma = np.append(temp_sigma, np.matrix(temp).T, 1)
+    # print temp_sigma;
+
+>>>>>>> FETCH_HEAD
     # temp = np.matrix(temp)
     # temp = temp.T
     # temp_sigma = np.append(temp_sigma, temp, 0)
@@ -79,6 +107,7 @@ def gp_posterior(sigma_old, Y, fY, y, A, t, d):
 
     #calculate mu and sigma according to the rembo paper.
     # This code is still not working
+<<<<<<< HEAD
     temp_mu =  k_vector.T * Kinv * fY
     temp_sigma = sqexp_kernel(x, x) - k_vector.T * Kinv * k_vector
 
@@ -86,7 +115,28 @@ def gp_posterior(sigma_old, Y, fY, y, A, t, d):
     #using temp_mu and temp_sigma
     candidate = UCB(t, d, temp_mu, temp_sigma)
     # print candidate
+=======
+    # print k_vector
+    # print "==========";
+    # print np.linalg.inv(sigma_old)
+    # print "==========";
+    # print ytrain
+    # print "==========";
+    temp_mu =  k_vector * np.linalg.inv(sigma_old) * ytrain
+    # print temp_mu
+    # temp_sigma = sqexp_kernel(test, test) - k_vector.T * np.linalg.inv(sigma_old) * k_vector
 
+    # print "==========";
+    # print temp_sigma;
+    # print "==========";
+
+    #call the aqcuisition function here, and find argmax.
+    #using temp_mu and temp_sigma
+    variance = sqexp_kernel(row, row)
+    # print variance
+
+    candidate = gp_optimize(t, d, temp_mu, 1)
+>>>>>>> FETCH_HEAD
     candidates.append(candidate)
 
 
