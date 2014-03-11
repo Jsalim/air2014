@@ -43,29 +43,34 @@ def f_func(x):
 # Function to calculate GP Posterior
 # It returns predictive mean and variance
 # REMBO paper page 3
-def gp_posterior(data_old, sigma_old, Y, ytrain, A, t, d):
+def gp_posterior(sigma_old, Y, fY, y, A, t, d):
 
   mu =[]
   sigma=[]
   candidates=[]
 
-  for i in xrange(0, len(Y)):
-    row = Y[i]
-    test = np.dot(A,row)
-    test = test.T
-    train = data_old
+  K = np.array([t,t])
+  for ind in range(t):
+    for jnd in range(t):
+      K[ind,jnd] = sqexp_kernel(Y[ind],Y[jnd])
+  Kinv = np.linalg.inv(K+0.01*np.eye(t))
+
+  for i in xrange(0, len(y)):
+    y = Y[i]
+    x = np.dot(A,y)
+    x = x.T
 
     #compute the k vector according to the third paper page 8.
     temp_sigma = sigma_old
     k_vector = []
 
     for j in range(0,t+1):
-      k_vector=np.append(k_vector,sqexp_kernel(data_old[j],test))
+      k_vector=np.append(k_vector,sqexp_kernel(Y[j],y))
 
     #add new line and column to the COV matrix.
-    temp_sigma = np.append(temp_sigma, np.matrix(k_vector), 1)
-    temp = np.append(k_vector, [sqexp_kernel(test, test)], 0)
-    temp_sigma = np.append(temp_sigma, np.matrix(temp), 0)
+    # temp_sigma = np.append(temp_sigma, np.matrix(k_vector), 1)
+    # temp = np.append(k_vector, [sqexp_kernel(x, x)], 0)
+    # temp_sigma = np.append(temp_sigma, np.matrix(temp), 0)
     # temp = np.matrix(temp)
     # temp = temp.T
     # temp_sigma = np.append(temp_sigma, temp, 0)
@@ -73,13 +78,13 @@ def gp_posterior(data_old, sigma_old, Y, ytrain, A, t, d):
 
     #calculate mu and sigma according to the rembo paper.
     # This code is still not working
-    temp_mu =  k_vector.T* np.linalg.inv(sigma_old) * ytrain
-    temp_sigma = sqexp_kernel(test, test) - k_vector.T * np.linalg.inv(sigma_old) * k_vector
+    temp_mu =  k_vector.T * Kinv * fY
+    temp_sigma = sqexp_kernel(x, x) - k_vector.T * Kinv * k_vector
 
     #call the aqcuisition function here, and find argmax.
     #using temp_mu and temp_sigma
-    candidate = gp_optimize(t, d, temp_mu, temp_sigma)
-    print candidate
+    candidate = UCB(t, d, temp_mu, temp_sigma)
+    # print candidate
     candidates.append(candidate)
 
 
@@ -91,9 +96,9 @@ def gp_posterior(data_old, sigma_old, Y, ytrain, A, t, d):
   print len(Y)
   best_index = np.argmax(candidates)
   print best_index
-  ybest = Y[best_index]
+  ybest = y[best_index]
 
-  return mu, sigma, ybest
+  return ybest
 
 
 #given a point y outside Y, find its projection in Y
@@ -129,7 +134,7 @@ def sqexp_kernel(y1, y2):
 # Acquisition Function
 # GP-UCB Algorithm
 # GP Paper page 4
-def gp_optimize(t, d, mu, sigma):
+def UCB(t, d, mu, sigma):
   t = t + 1
   # ycandidates = []
 
@@ -140,10 +145,10 @@ def gp_optimize(t, d, mu, sigma):
   # best_index = np.argmax(ycandidates)
   # return xtest[best_index]
 
-def augment_data(xtrain, ytrain, xbest, A):
+def augment_data(xtrain, fY, xbest, A):
   train = A * xbest.T
   train = train.T
 
   xtrain = np.concatenate((xtrain, train), 0)
-  ytrain = np.concatenate((ytrain, f_func(train)), 0)
-  return xtrain, ytrain
+  fY = np.concatenate((fY, f_func(train)), 0)
+  return xtrain, fY

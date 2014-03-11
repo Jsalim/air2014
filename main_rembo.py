@@ -37,6 +37,9 @@ mu =0
 sigma = np.matrix(1)
 
 # Step 3 - 6
+#ytrain : D dimensional dataset
+#ytest: Y subset
+#fytrain: sample from dataset (ytrain)
 for t in range(0, max_iter):
   # Select points from bounded box to be tested
   ytest =Y
@@ -52,3 +55,4 @@ for t in range(0, max_iter):
   # ytrain, fytrain = acq.augment_data(ytrain, fytrain, ybest, A)
 
   print ybest
+  
