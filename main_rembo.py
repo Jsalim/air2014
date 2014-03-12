@@ -5,7 +5,7 @@ import math
 
 import acquisition_function as acq
 import create_random_matrix as crm
-import chooseBoundedRegion as cbr
+import choose_bounded_region as cbr
 
 D = 10 # number of features
 d = 3 # reducted dimension
@@ -15,8 +15,8 @@ n_test = 1
 max_iter = 5 # maximum number of iterations
 sigma_0 = 0.1
 
-regionBound = math.sqrt(d)
-regionBoundStepSize = 0.5
+region_bound = math.sqrt(d)
+region_bound_step_size = 0.5
 
 
 # Sample training input and ouput
@@ -31,6 +31,7 @@ A = crm.random_matrix(D, d)
 # Step 2
 # Choose bounded region set
 y = cbr.chooseBoundedRegion(d, -regionBound, regionBound, regionBoundStepSize)
+
 
 
 #define initial mu and sigma
