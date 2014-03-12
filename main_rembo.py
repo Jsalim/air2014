@@ -20,8 +20,8 @@ regionBoundStepSize = 0.5
 
 
 # Sample training input and ouput
-ytrain = np.random.uniform(-5, 5, (n_training, D))
-fytrain = acq.sample_training_output(ytrain)
+#ytrain = np.random.uniform(-5, 5, (n_training, D))
+#fytrain = acq.sample_training_output(ytrain)
 
 
 # Step 1
@@ -30,7 +30,8 @@ A = crm.random_matrix(D, d)
 
 # Step 2
 # Choose bounded region set
-Y = cbr.chooseBoundedRegion(d, -regionBound, regionBound, regionBoundStepSize)
+y = cbr.chooseBoundedRegion(d, -regionBound, regionBound, regionBoundStepSize)
+
 
 #define initial mu and sigma
 mu =0
@@ -40,13 +41,23 @@ sigma = np.matrix(1)
 #ytrain : D dimensional dataset
 #ytest: Y subset
 #fytrain: sample from dataset (ytrain)
+
+
+
 for t in range(0, max_iter):
+  number_of_samples =  t+1
+
+  #Step 3 : sample out of y , and create Y
+  Y = acq.select_sample_set(number_of_samples,y)
+
+
+
   # Select points from bounded box to be tested
-  ytest =Y
+  #ytest =Y
   #ytest = acq.select_test_set(n_test, Y)
 
   # Get mu and sigma
-  mu, sigma, ybest = acq.gp_posterior(ytrain, sigma, ytest, fytrain, A, t, d)
+  mu, sigma, ybest = acq.gp_posterior(ytrain, sigma, ytest, fytrain, A, t, d, number_of_samples)
 
   # Find ybest
   # ybest = acq.gp_optimize(ytest, t, D, mu, sigma, n_test)

@@ -7,7 +7,7 @@ import chooseBoundedRegion as cbr
 import scipy.spatial.distance as sp
 
 
-D=64
+D=10
 d=3
 
 # Step 1
@@ -20,8 +20,8 @@ A = crm.random_matrix(D, d)
 regionBound = math.sqrt(d)
 regionBoundStepSize = 0.1
 
-#Y = N x d matrix
-Y = cbr.chooseBoundedRegion(d, -regionBound, regionBound, regionBoundStepSize)
+#y = N x d matrix (the exhaustive search subset)
+y = cbr.chooseBoundedRegion(d, -regionBound, regionBound, regionBoundStepSize)
 
 covarianceMatrix = np.ones([10,10])
 #t = number of iterations. 

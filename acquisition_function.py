@@ -23,12 +23,12 @@ def get_beta(t,d):
 
 
 # Function to select test set from bounded box
-def select_test_set(n_test, Y):
+def select_sample_set(n_test, y):
   test_set = []
 
   for i in xrange(0, n_test):
-    idx = np.random.randint(0, len(Y))
-    test_set.append(Y[idx])
+    idx = np.random.randint(0, len(y))
+    test_set.append(y[idx])
 
   return np.matrix(test_set)
 
@@ -38,12 +38,12 @@ def sample_training_output(xtrain):
   return f_func(xtrain) + np.random.normal(0, 0.001)
 
 def f_func(x):
-  return x.sum(1)
+  return -(x.sum(1))**2
 
 # Function to calculate GP Posterior
 # It returns predictive mean and variance
 # REMBO paper page 3
-def gp_posterior(sigma_old, Y, fY, y, A, t, d):
+def gp_posterior(data,Y, y, A, t, d, number_of_samples):
 
   mu =[]
   sigma=[]
@@ -55,13 +55,20 @@ def gp_posterior(sigma_old, Y, fY, y, A, t, d):
       K[ind,jnd] = sqexp_kernel(Y[ind],Y[jnd])
   Kinv = np.linalg.inv(K+0.01*np.eye(t))
 
+  fY = np.array()
+
+  for q in range(0,number_of_samples):
+    fY[q]=f_func(Y[q])
+
   for i in xrange(0, len(y)):
-    y = Y[i]
+    
+    y_instance = Y[i]
+    y_projected = projection(data,A*y_projected)
+
     x = np.dot(A,y)
     x = x.T
 
     #compute the k vector according to the third paper page 8.
-    temp_sigma = sigma_old
     k_vector = []
 
     for j in range(0,t+1):
@@ -80,7 +87,7 @@ def gp_posterior(sigma_old, Y, fY, y, A, t, d):
     #calculate mu and sigma according to the rembo paper.
     # This code is still not working
     temp_mu =  k_vector.T * Kinv * fY
-    temp_sigma = sqexp_kernel(x, x) - k_vector.T * Kinv * k_vector
+    temp_sigma = sqexp_kernel(y_instance,y_instance) - k_vector.T * Kinv * k_vector
 
     #call the aqcuisition function here, and find argmax.
     #using temp_mu and temp_sigma
