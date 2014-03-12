@@ -26,6 +26,10 @@ y=np.array(y)
 
 max_iter = 10
 
+#create artificial data [0...1]
+#data = cbr.choose_bounded_region(d,0,1,0.5)
+#y_projected = acq.projection(data,ybest)
+
 
 # t starts from 1 to avoid having t+1 all over the code (might confuse us.)
 for t in range(1, max_iter+1):

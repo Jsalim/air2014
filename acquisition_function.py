@@ -139,7 +139,7 @@ def projection(Y,y):
   min_z = Y[1]
   for i in range(0,len(Y)):
     z = Y[i];
-    temp_dist = numpy.linalg.norm(y-z)
+    temp_dist = np.linalg.norm(y-z)
     if temp_dist<dist:
       dist=temp_dist
       min_z=Y[i]

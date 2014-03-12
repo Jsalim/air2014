@@ -23,6 +23,11 @@ regionBoundStepSize = 0.5
 #y = N x d matrix (the exhaustive search subset)
 y = cbr.choose_bounded_region(d, -regionBound, regionBound, regionBoundStepSize)
 
+#create artificial data [0...1]
+#data = cbr.choose_bounded_region(d,0,1,0.5)
+#y_projected = acq.projection(data,ybest)
+
+
 
 max_iter = 10
 
