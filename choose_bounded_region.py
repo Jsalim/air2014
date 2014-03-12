@@ -30,5 +30,3 @@ def choose_bounded_region (d, lower_bound, upper_bound, step_size):
 		y.append(arr)
 	return y
 
-y = choose_bounded_region(3,0,1,0.2)
-print y

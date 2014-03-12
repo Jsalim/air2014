@@ -40,6 +40,29 @@ def sample_training_output(xtrain):
 def f_func(x):
   return -(x.sum(1))**2
 
+
+def get_Kinv(t,Y):
+  K = np.zeros([t,t])
+  for ind in range(t):
+    for jnd in range(t):
+      K[ind,jnd] = sqexp_kernel(Y[ind],Y[jnd])
+  Kinv = np.linalg.inv(K+0.01*np.eye(t))
+  return Kinv
+
+
+#input: No. of samples output: vector fY
+def calculate_fY(number_of_samples,A,Y,t):
+  fY = np.zeros([t,1])
+  for q in range(0,number_of_samples):
+    fY[q]= f_func(np.dot(A,(Y[q].T)).T)
+  return fY
+
+def compute_kVector(t,Y,y_new):
+  #compute the k vector according to the third paper page 8.
+  k_vector = []
+  for j in range(0,t):
+    k_vector=np.append(k_vector,sqexp_kernel(Y[j],y_new))
+  return k_vector
 # Function to calculate GP Posterior
 # It returns predictive mean and variance
 # REMBO paper page 3
@@ -49,11 +72,7 @@ def gp_posterior(data,Y, y, A, t, d, number_of_samples):
   sigma=[]
   candidates=[]
 
-  K = np.array([t,t])
-  for ind in range(t):
-    for jnd in range(t):
-      K[ind,jnd] = sqexp_kernel(Y[ind],Y[jnd])
-  Kinv = np.linalg.inv(K+0.01*np.eye(t))
+  Kinv = get_Kinv(t,Y)
 
   fY = np.array()
 
@@ -68,11 +87,6 @@ def gp_posterior(data,Y, y, A, t, d, number_of_samples):
     x = np.dot(A,y)
     x = x.T
 
-    #compute the k vector according to the third paper page 8.
-    k_vector = []
-
-    for j in range(0,t+1):
-      k_vector=np.append(k_vector,sqexp_kernel(Y[j],y))
 
     #add new line and column to the COV matrix.
     # temp_sigma = np.append(temp_sigma, np.matrix(k_vector), 1)
@@ -144,10 +158,8 @@ def sqexp_kernel(y1, y2):
 # GP-UCB Algorithm
 # GP Paper page 4
 def UCB(t, d, mu, sigma):
-  t = t + 1
   # ycandidates = []
 
-  mu = np.average(mu)
   # print "=========="
   # print math.sqrt(get_beta(t,d))
   # print "=========="

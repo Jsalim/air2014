@@ -3,7 +3,7 @@ import math
 import parisFunctions as pf
 import acquisition_function as acq
 import create_random_matrix as crm
-import chooseBoundedRegion as cbr
+import choose_bounded_region as cbr
 import scipy.spatial.distance as sp
 
 
@@ -18,21 +18,74 @@ A = crm.random_matrix(D, d)
 # Step 2
 # Choose bounded region set
 regionBound = math.sqrt(d)
-regionBoundStepSize = 0.1
+regionBoundStepSize = 0.5
 
 #y = N x d matrix (the exhaustive search subset)
-y = cbr.chooseBoundedRegion(d, -regionBound, regionBound, regionBoundStepSize)
+y = cbr.choose_bounded_region(d, -regionBound, regionBound, regionBoundStepSize)
 
-covarianceMatrix = np.ones([10,10])
-#t = number of iterations. 
-numIter=10
+#define initial mu and sigma
+mu =0
+sigma = np.matrix(1)
+
+max_iter = 3
 
 
-#k=acq.sqexp_kernel([1,2,3],[1,2,3])
+# t starts from 1 to avoid having t+1 all over the code (might confuse us.)
+for t in range(1, max_iter+1):
+	  
+	#number of samples = t for each iteration step. (is that correct?)
+  	number_of_samples =  t
 
-for t in range(0, numIter):
-	covarianceMatrix[t,:] = t
-	covarianceMatrix[:,t] =t
-print covarianceMatrix
- 
 
+  	#Step 3 : sample out of y , and create Y
+  	Y = acq.select_sample_set(number_of_samples,y)
+
+
+  	#initialize mu,sigma,candidates, fY
+  	mu =[]
+  	sigma=[]
+  	candidates=[]
+
+
+  	#get the K inverse matrix
+  	Kinv = acq.get_Kinv(t,Y)
+  	#calculate fY = vector [f(A*y1);f(A*y2).....f(A*yt)] (vertical)
+  	fY =  acq.calculate_fY(number_of_samples,A,Y,t)
+  
+  	#exhaustive search in y
+  	for i in xrange(0, len(y)):
+  		#set new point
+  		y_new = y[i]
+  	
+  		#calculate k vector
+  		k_vector = acq.compute_kVector(t,Y,y_new)
+  	
+  		#calculate mu, sigma
+  		temp_mu =  np.dot(np.dot(k_vector,Kinv),fY)
+  		temp_sigma = acq.sqexp_kernel(y_new,y_new) - np.dot(np.dot(k_vector,Kinv),k_vector.T)
+
+
+  		candidate =acq.UCB(t,d,temp_mu,temp_sigma)
+		candidates.append(candidate)  
+
+
+	best_index = np.argmax(candidates)	
+  	print best_index
+  	ybest = y[best_index]
+  	print ybest
+
+  #print Kinv
+  # Select points from bounded box to be tested
+  #ytest =Y
+  #ytest = acq.select_test_set(n_test, Y)
+
+  # Get mu and sigma
+  #mu, sigma, ybest = acq.gp_posterior(ytrain, sigma, ytest, fytrain, A, t, d, number_of_samples)
+
+  # Find ybest
+  # ybest = acq.gp_optimize(ytest, t, D, mu, sigma, n_test)
+
+  # Augment the data
+  # ytrain, fytrain = acq.augment_data(ytrain, fytrain, ybest, A)
+
+  #print ybest
