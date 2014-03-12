@@ -21,6 +21,15 @@ def get_beta(t,d):
     return beta
 
 
+# Function to select random point
+def select_random_point(y):
+
+  test_set=[]
+  idx = np.random.randint(0, len(y))
+  test_set.append(y[idx])
+
+  return np.matrix(test_set)
+
 
 # Function to select test set from bounded box
 def select_sample_set(n_test, y):

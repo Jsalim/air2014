@@ -23,11 +23,8 @@ regionBoundStepSize = 0.5
 #y = N x d matrix (the exhaustive search subset)
 y = cbr.choose_bounded_region(d, -regionBound, regionBound, regionBoundStepSize)
 
-#define initial mu and sigma
-mu =0
-sigma = np.matrix(1)
 
-max_iter = 3
+max_iter = 10
 
 
 # t starts from 1 to avoid having t+1 all over the code (might confuse us.)
@@ -41,9 +38,7 @@ for t in range(1, max_iter+1):
   	Y = acq.select_sample_set(number_of_samples,y)
 
 
-  	#initialize mu,sigma,candidates, fY
-  	mu =[]
-  	sigma=[]
+
   	candidates=[]
 
 
