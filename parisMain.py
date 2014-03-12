@@ -64,28 +64,14 @@ for t in range(1, max_iter+1):
   		temp_mu =  np.dot(np.dot(k_vector,Kinv),fY)
   		temp_sigma = acq.sqexp_kernel(y_new,y_new) - np.dot(np.dot(k_vector,Kinv),k_vector.T)
 
-
+  		#get candidates through acquisition function
   		candidate =acq.UCB(t,d,temp_mu,temp_sigma)
 		candidates.append(candidate)  
 
-
+	#find the best candidate
 	best_index = np.argmax(candidates)	
   	print best_index
   	ybest = y[best_index]
   	print ybest
 
-  #print Kinv
-  # Select points from bounded box to be tested
-  #ytest =Y
-  #ytest = acq.select_test_set(n_test, Y)
-
-  # Get mu and sigma
-  #mu, sigma, ybest = acq.gp_posterior(ytrain, sigma, ytest, fytrain, A, t, d, number_of_samples)
-
-  # Find ybest
-  # ybest = acq.gp_optimize(ytest, t, D, mu, sigma, n_test)
-
-  # Augment the data
-  # ytrain, fytrain = acq.augment_data(ytrain, fytrain, ybest, A)
-
-  #print ybest
+  
