@@ -22,7 +22,7 @@ regionBoundStepSize = 0.5
 
 #y = N x d matrix (the exhaustive search subset)
 y = cbr.choose_bounded_region(d, -regionBound, regionBound, regionBoundStepSize)
-
+y=np.array(y)
 
 max_iter = 10
 
@@ -64,9 +64,8 @@ for t in range(1, max_iter+1):
 
   #find the best candidate
   best_index = np.argmax(candidates)	
-  ybest = [y[best_index]]
-
+  ybest =[y[best_index]]
   print Y
-  Y=np.append(Y,ybest,0)
 
-  
+  Y=np.append(Y,ybest,0)
+  y=np.delete(y,best_index,0)

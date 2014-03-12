@@ -36,7 +36,7 @@ for t in range(1, max_iter+1):
 
   	#Step 3 : sample out of y , and create Y
   	Y = acq.select_sample_set(number_of_samples,y)
-
+  	y=np.array(y)
 
 
   	candidates=[]
