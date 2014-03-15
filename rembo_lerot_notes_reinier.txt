@@ -1,0 +1,16 @@
+#REMBO-BO
+- is projection implemented in parisMain2.py?
+
+#REMBO-LEROT
+- the features in query-document pairs always are in the range [0,1]. 
+	- So we should project to that. Where?
+	- But how do we choose a bounded box? also [0,1]? That is what I did now at least.
+	- notes on projection. 
+		- some projection is going on when I am picking a new random direction for y_probe (in get_random_close_point, called in line 54 in rembo_lerot.py)
+		- I thought we also needed it before we create the ranker objects (called in rembo_lerot in line 57), but I am not sure what values are good for the ranker objects so we might not even be able to decide on where to project to? There may not even be an official bound on that, so maybe it's good enough like this?
+	
+- exploration (beta)/exploitation steps as in the paper  "interactively optimizing information retrieval systems as a dueling bandit problem"
+	- but what does it mean that beta = 1? How do we incorporate that into a number? We cannot just increase the current value by 1, since our bounds is [0,1], right?
+	
+- I changed around the mu/sigma in the random_matrix to (0.5, 1), because I think we need values between [0,1]
+	
