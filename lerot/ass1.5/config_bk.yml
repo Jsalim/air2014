@@ -1,0 +1,20 @@
+evaluation:
+- evaluation.NdcgEval
+experimenter: experiment.LearningExperiment
+feature_count: 64
+file: config/experiment.yml
+num_queries: 1000
+num_runs: 1
+output_dir: outdir
+output_dir_overwrite: 'False'
+output_prefix: Fold1
+processes: 0
+query_sampling_method: random
+system: retrieval_system.ListwiseLearningSystem
+system_args: --init_weights random --sample_weights sample_unit_sphere --comparison
+  comparison.ProbabilisticInterleave --delta 0.1 --alpha 0.01 --ranker ranker.ProbabilisticRankingFunction
+  --ranker_arg 3 --ranker_tie random
+test_queries: data/NP2004/Fold1/test.txt
+training_queries: data/NP2004/Fold1/train.txt
+user_model: environment.CascadeUserModel
+user_model_args: --p_click 0:0.0,1:0.5,2:1.0 --p_stop 0:0.0,1:0.0,2:0.0
