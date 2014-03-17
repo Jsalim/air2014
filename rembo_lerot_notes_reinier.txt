@@ -13,4 +13,30 @@
 	- but what does it mean that beta = 1? How do we incorporate that into a number? We cannot just increase the current value by 1, since our bounds is [0,1], right?
 	
 - I changed around the mu/sigma in the random_matrix to (0.5, 1), because I think we need values between [0,1]
+
+16-03-2014 (Paris & Arif):
+
+-projection is not implemented yet. Now that we have the test data (to run our experiments on) we can add the projection function. However, how do we discretize the test Data set (D)? because we need discrete points in D to find the closest one to y_candidate.
+
+-possible experimenting/result graphs: 
+	* produce some result using just Lerot (assignment code). keep this as a baseline
+	* find t (iterations) where Rembo converges to an "optimal" ybest ? 
+	* using that t, test for different d/beta/kernel_stuff and compare to the baseline 	  (Lerot).
+	* Find new t (iterations) for which Rembo converges faster using different d/beta/	  kernel_stuff.
+	* Compare results between different Rembo setups (delta,beta) exploration vs.	 	  exploitation
+	* Change the strategy of comparing the rankers and choosing the y_probe (maybe 		  explore some point farther away from y_current)
+	
+- research questions (for the paper):
+	* is Rembo faster that baseline (Lerot)?
+	* well, of course it's faster but does it produce better/worse results?
+	* is there a parameter setup for Rembo that produces results better than the 		  baseline? (like: is there any chance rembo can improve the results)
+	* if that happens, why yes? or why not?
+	* Find the optimal configuration for rembo (d,t,stuff like that)
+- questions for Masrour tomorrow:
+	* is there a proper way to evaluate rembo's results (?)
+	* maybe look at the code and find any obvious implementation errors (make sure the 	results are proper for evaluation/experimenting)
+	* ask him if there is anything else to be implemented (code-wise)
+	* do we have to present this? when is the deadline?
+
+
 	
