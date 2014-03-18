@@ -62,8 +62,13 @@ class Learning2Rank:
 		
 	# evaluate two rankers using all queries as opposed to one
 	def evaluate_multi_query(self, ranker1, ranker2, iters):
+		sum = 0
 		for i in range(0,iters):
 			result = evaluate(ranker1, ranker2)
 			if result < 0:
-				
+				sum = sum + 1
+			elif result > 0:
+				sum = sum - 1 
+			elif result == 0:
+				sum = sum
 		return result

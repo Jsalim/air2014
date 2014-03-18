@@ -86,10 +86,19 @@ for t in range(1, l2r.get_query_length()):
 	print "---Y--------"
 	print Y
 
-# ranker_best = ranker.ProbabilisticRankingFunction('3', 'random', 64, init=parseRanker('../../data/features64/ranker-02.txt'),sample='sample_unit_sphere')
+# comparing when we know relevance values of documents (uses ndcg)
+evaluation = evaluation.NdcgEval()
+ndcg_result = []
+for y_instance in Y:
+	ranker_instance =  l2r.prepare_ranker(A, y_instance)
+	ndcg_result.append(evaluation.evaluate_all(ranker_instance, queries))
+print ndcg_result
 
-# for y_instance in Y:
-	# ranker_instance =  l2r.prepare_rankers(A, y_instance)
-	# result = l2r.evaluate_multi_query(ranker_instance, ranker_best)
-	
-	
+# comparing against some other best ranker using regret
+regret_result = []
+# ranker_best = ranker.ProbabilisticRankingFunction('3', 'random', 64, init=parseRanker('../../data/features64/ranker-02.txt'),sample='sample_unit_sphere')
+ranker_best = AbstractRankingFunction(["ranker.model.BM25"], 'first', 3, sample="utils.sample_fixed")
+for y_instance in Y:
+	ranker_instance =  l2r.prepare_ranker(A, y_instance)
+	regret_result.append(l2r.evaluate_multi_query(ranker_instance, ranker_best, 10))
+print regret_result
