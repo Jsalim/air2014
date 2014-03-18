@@ -28,7 +28,7 @@ from utils import get_class, split_arg_str, string_to_boolean
 from utils import normalize_to_unit_sphere
 
 
-class ListwiseLearningSystem(AbstractLearningSystem):
+class ListwiseLearningSystemREMBO(AbstractLearningSystem):
     """A retrieval system that learns online from listwise comparisons. The
     system keeps track of all necessary state variables (current query,
     weights, etc.) so that comparison and learning classes can be stateless
