@@ -37,6 +37,10 @@
 	* maybe look at the code and find any obvious implementation errors (make sure the 	results are proper for evaluation/experimenting)
 	* ask him if there is anything else to be implemented (code-wise)
 	* do we have to present this? when is the deadline?
+	
+	* how to evaluate BO
+	* how to evaluate lerot rembo (regret? against which best ranker?)
+	* are there min/max weight values for ranker objects? In other words, do we need to project?
 
 
 	

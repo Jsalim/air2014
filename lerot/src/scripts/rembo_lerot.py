@@ -85,3 +85,11 @@ for t in range(1, l2r.get_query_length()):
 	
 	print "---Y--------"
 	print Y
+
+# ranker_best = ranker.ProbabilisticRankingFunction('3', 'random', 64, init=parseRanker('../../data/features64/ranker-02.txt'),sample='sample_unit_sphere')
+
+# for y_instance in Y:
+	# ranker_instance =  l2r.prepare_rankers(A, y_instance)
+	# result = l2r.evaluate_multi_query(ranker_instance, ranker_best)
+	
+	
