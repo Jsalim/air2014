@@ -15,21 +15,18 @@
 
 from utils import get_class
 import numpy as np
-from create_random_matrix import random_matrix2
+from create_random_matrix import random_matrix
 
 class AbstractRankingFunction:
     """Abstract base class for ranking functions."""
 	
     def __init__(self,
-                 ranker_arg_str,
+                 d,ranker_arg_str,
                  ties,
                  feature_count,
                  init=None,
                  sample=None):
-        d = 4
-        mu = 0.5
-        sigma = 1
-        self.A = random_matrix2(feature_count, d, mu, sigma)
+        self.A = random_matrix(feature_count, d)
 		
         self.feature_count = feature_count
         ranking_model_str = "ranker.model.LinearREMBO"

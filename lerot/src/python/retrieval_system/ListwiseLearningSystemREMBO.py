@@ -34,7 +34,7 @@ class ListwiseLearningSystemREMBO(AbstractLearningSystem):
     weights, etc.) so that comparison and learning classes can be stateless
     (implement only static / class methods)."""
 
-    def __init__(self, feature_count, arg_str):
+    def __init__(self, feature_count, d, arg_str):
         # parse arguments
         parser = argparse.ArgumentParser(description="Initialize retrieval "
             "system with the specified feedback and learning mechanism.",
@@ -59,7 +59,7 @@ class ListwiseLearningSystemREMBO(AbstractLearningSystem):
         self.sample_weights = args["sample_weights"]
         self.init_weights = args["init_weights"]
         self.feature_count = feature_count
-        self.ranker = self.ranker_class(self.ranker_args,
+        self.ranker = self.ranker_class(d,self.ranker_args,
                                         self.ranker_tie,
                                         self.feature_count,
                                         sample=self.sample_weights,
