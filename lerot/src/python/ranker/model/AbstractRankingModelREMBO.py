@@ -13,12 +13,13 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Lerot.  If not, see <http://www.gnu.org/licenses/>.
 
+import numpy as np
 from numpy import array, zeros
 from utils import sample_unit_sphere
 from random import gauss
 
 
-class AbstractRankingModel(object):
+class AbstractRankingModelREMBO(object):
 
     def __init__(self, feature_count):
         self.feature_count = feature_count
@@ -30,7 +31,7 @@ class AbstractRankingModel(object):
         if method == "zero":
             return zeros(self.feature_count)
         elif method == "random":
-            return np.dot(A,(sample_unit_sphere(d) * 0.01).T).T)
+            return np.dot(A,(sample_unit_sphere(d) * 0.01).T).T
         elif method == "fullyrandom":
             v = zeros(self.feature_count)
             for i in range(self.feature_count):

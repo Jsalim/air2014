@@ -14,6 +14,8 @@
 # along with Lerot.  If not, see <http://www.gnu.org/licenses/>.
 
 from Linear import Linear
+
+from LinearREMBO import LinearREMBO
 from OneHiddenLayer import OneHiddenLayer
 from BM25 import BM25
 from BM25Ensemble import BM25Ensemble

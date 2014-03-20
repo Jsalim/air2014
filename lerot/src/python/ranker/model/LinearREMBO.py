@@ -14,10 +14,10 @@
 # along with Lerot.  If not, see <http://www.gnu.org/licenses/>.
 
 import numpy as np
-from AbstractRankingModelREMBO import AbstractRankingModel
+from AbstractRankingModelREMBO import AbstractRankingModelREMBO
 
 
-class Linear(AbstractRankingModel):
+class LinearREMBO(AbstractRankingModelREMBO):
 
     def score(self, features, w):
         return np.dot(features, w)

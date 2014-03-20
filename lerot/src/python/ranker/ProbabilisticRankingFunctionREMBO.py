@@ -20,7 +20,7 @@ from utils import rank
 from AbstractRankingFunctionREMBO import AbstractRankingFunction
 
 
-class ProbabilisticRankingFunction(AbstractRankingFunction):
+class ProbabilisticRankingFunctionREMBO(AbstractRankingFunction):
 
     def init_ranking(self, query):
         self.qid = query.get_qid()

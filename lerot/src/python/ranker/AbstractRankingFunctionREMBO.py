@@ -26,13 +26,13 @@ class AbstractRankingFunction:
                  feature_count,
                  init=None,
                  sample=None):
-		d = 4
-		mu = 0.5
-		sigma = 1
-		self.A = random_matrix2(feature_count, d, mu, sigma)
+        d = 4
+        mu = 0.5
+        sigma = 1
+        self.A = random_matrix2(feature_count, d, mu, sigma)
 		
         self.feature_count = feature_count
-        ranking_model_str = "ranker.model.Linear"
+        ranking_model_str = "ranker.model.LinearREMBO"
         
         for arg in ranker_arg_str:
             if arg.startswith("ranker.model"):
@@ -44,8 +44,7 @@ class AbstractRankingFunction:
         self.sample = getattr(__import__("utils"), sample)
 
         self.ties = ties
-        self.w = self.ranking_model.initialize_weights(init)
-
+        self.w = self.ranking_model.initialize_weights(init,self.A,d)
     def score(self, features):
         return self.ranking_model.score(features, self.w.transpose())
 
