@@ -19,7 +19,7 @@ from create_random_matrix import random_matrix
 
 class AbstractRankingFunction:
     """Abstract base class for ranking functions."""
-	
+
     def __init__(self,
                  d,ranker_arg_str,
                  ties,
@@ -27,10 +27,10 @@ class AbstractRankingFunction:
                  init=None,
                  sample=None):
         self.A = random_matrix(feature_count, d)
-		
+
         self.feature_count = feature_count
         ranking_model_str = "ranker.model.LinearREMBO"
-        
+
         for arg in ranker_arg_str:
             if arg.startswith("ranker.model"):
                 ranking_model_str = arg
@@ -89,3 +89,6 @@ class AbstractRankingFunction:
             self.w = w
         else:
             self.w = self.w + alpha * w
+
+    def get_a(self):
+        return self.A
