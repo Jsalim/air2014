@@ -10,7 +10,7 @@ import datetime
 # init data, query_samples, d's
 queries = query.load_queries('../../DATA/NP2004/Fold1/train.txt', 64)
 test_queries = query.load_queries('../../DATA/NP2004/Fold1/test.txt', 64)
-query_samples = 30 # how many queries we sample
+query_samples = 500 # how many queries we sample
 
 d_array = [2,3,4,5,6]
 k_array = [1,2,5,10]
@@ -50,10 +50,15 @@ for n in range(0, len(k_array)):
         # rem_ndcg_result[n][idx] = sum(temp_ndcg_evaluation) / float(len(temp_ndcg_evaluation))
         rem_ndcg_result[n][idx] = temp_ndcg_evaluation
 
+        timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+        f = open("../../output/experiment1/" + timestamp + "k_" + str(k) + "d_" + str(d) + ".txt", "w")
+        f.write("%s" % str(temp_ndcg_evaluation) + "\n")
+        f.close()
+
 # write the result to file
-timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
-f = open("../../output/experiment1/" + timestamp + ".txt", "w")
-f.write("k: %s" % str(k_array) + "\n")
-f.write("d: %s" % str(d_array) + "\n")
-f.write("ndcg: %s" % str(rem_ndcg_result))
-f.close()
+# timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+# f = open("../../output/experiment1/" + timestamp + "k_" + k + "d_" + d + ".txt", "w")
+# f.write("k: %s" % str(k_array) + "\n")
+# f.write("d: %s" % str(d_array) + "\n")
+# f.write("ndcg: %s" % str(rem_ndcg_result))
+# f.close()
