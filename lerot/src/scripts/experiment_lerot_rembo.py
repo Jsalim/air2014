@@ -47,7 +47,8 @@ for n in range(0, len(k_array)):
                 temp_ndcg_evaluation.append(evaluation.evaluate_all(s, test_queries))
 
         # calculate average ndcg for all evaluation
-        rem_ndcg_result[n][idx] = sum(temp_ndcg_evaluation) / float(len(temp_ndcg_evaluation))
+        # rem_ndcg_result[n][idx] = sum(temp_ndcg_evaluation) / float(len(temp_ndcg_evaluation))
+        rem_ndcg_result[n][idx] = temp_ndcg_evaluation
 
 # write the result to file
 timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
