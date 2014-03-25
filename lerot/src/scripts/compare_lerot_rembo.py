@@ -28,6 +28,12 @@ rem_ndcg_evaluation_test = []
 full_ndcg_evaluation_test = []
 
 # start k number of runs
+# print "k : " + str(k)
+# print "d : " + str(d)
+# print "========================"
+#
+# iteration = 1
+
 for m in range(0, k):
     # for each k, we have different A matrix
     # as mentioned on the REMBO paper
@@ -48,8 +54,11 @@ for m in range(0, k):
 
         rem_ndcg_evaluation_train.append(evaluation.evaluate_all(s_rem, train_queries))
         full_ndcg_evaluation_train.append(evaluation.evaluate_all(s_full, train_queries))
-        # rem_ndcg_evaluation_test.append(evaluation.evaluate_all(s_rem, test_queries))
-        # full_ndcg_evaluation_test.append(evaluation.evaluate_all(s_full, test_queries))
+        rem_ndcg_evaluation_test.append(evaluation.evaluate_all(s_rem, test_queries))
+        full_ndcg_evaluation_test.append(evaluation.evaluate_all(s_full, test_queries))
+
+        # print "iteration : " + str(iteration)
+        # iteration += 1
 
 # write the result to file
 timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
@@ -59,9 +68,9 @@ f.write("d: %s" % str(d) + "\n")
 f.write("rem_ndcg_evaluation: %s" % str(rem_ndcg_evaluation_train) + "\n")
 f.write("full_ndcg_evaluation: %s" % str(full_ndcg_evaluation_train))
 f.close()
-# f2 = open("../../output/experiment2/" + timestamp + "_test.txt", "w")
-# f2.write("k: %s" % str(k) + "\n")
-# f2.write("d: %s" % str(d) + "\n")
-# f2.write("rem_ndcg_evaluation: %s" % str(rem_ndcg_evaluation_test) + "\n")
-# f2.write("full_ndcg_evaluation: %s" % str(full_ndcg_evaluation_test))
-# f2.close()
+f2 = open("../../output/experiment2/" + timestamp + "_test.txt", "w")
+f2.write("k: %s" % str(k) + "\n")
+f2.write("d: %s" % str(d) + "\n")
+f2.write("rem_ndcg_evaluation: %s" % str(rem_ndcg_evaluation_test) + "\n")
+f2.write("full_ndcg_evaluation: %s" % str(full_ndcg_evaluation_test))
+f2.close()

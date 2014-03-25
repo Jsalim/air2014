@@ -32,6 +32,11 @@ for n in range(0, len(k_array)):
         d = d_array[idx]
         # temp_ndcg_evaluation_test = []
         temp_ndcg_evaluation_train = []
+        temp_ndcg_evaluation_test = []
+
+        print "k : " + str(k)
+        print "d : " + str(d)
+        print "========================"
 
         # start k number of runs
         for m in range(0, k):
@@ -46,19 +51,19 @@ for n in range(0, len(k_array)):
                 c = user_model.get_clicks(l, q.get_labels())
                 s = rem_learner.update_solution(c)
                 temp_ndcg_evaluation_train.append(evaluation.evaluate_all(s, train_queries))
-                #temp_ndcg_evaluation_test.append(evaluation.evaluate_all(s, test_queries))
+                temp_ndcg_evaluation_test.append(evaluation.evaluate_all(s, test_queries))
 
         # calculate average ndcg for all evaluation
         # rem_ndcg_result[n][idx] = sum(temp_ndcg_evaluation_test) / float(len(temp_ndcg_evaluation_test))
-        rem_ndcg_result[n][idx] = temp_ndcg_evaluation_test
+        # rem_ndcg_result[n][idx] = temp_ndcg_evaluation_test
 
         timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
         f = open("../../output/experiment1/" + timestamp + "k_" + str(k) + "d_" + str(d) + "_train.txt", "w")
         f.write("%s" % str(temp_ndcg_evaluation_train) + "\n")
-        f.close()        
-		#f2 = open("../../output/experiment1/" + timestamp + "k_" + str(k) + "d_" + str(d) + "_test.txt", "w")
-        #f2.write("%s" % str(temp_ndcg_evaluation_test) + "\n")
-        #f2.close()
+        f.close()
+        f2 = open("../../output/experiment1/" + timestamp + "k_" + str(k) + "d_" + str(d) + "_test.txt", "w")
+        f2.write("%s" % str(temp_ndcg_evaluation_test) + "\n")
+        f2.close()
 
 # write the result to file
 # timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
