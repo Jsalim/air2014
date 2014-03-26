@@ -10,7 +10,7 @@ import datetime
 # init data, query_samples, d's
 train_queries = query.load_queries('../../DATA/NP2004/Fold1/train.txt', 64)
 test_queries = query.load_queries('../../DATA/NP2004/Fold1/test.txt', 64)
-query_samples = 500 # how many queries we sample
+query_samples = 5000 # how many queries we sample
 
 d_array = [2,3,4,5,6]
 k_array = [1,2,5,10]

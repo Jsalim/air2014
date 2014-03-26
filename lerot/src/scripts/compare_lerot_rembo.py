@@ -11,7 +11,7 @@ import numpy as np
 # init data, query_samples, d's
 train_queries = query.load_queries('../../DATA/NP2004/Fold1/train.txt', 64)
 test_queries = query.load_queries('../../DATA/NP2004/Fold1/test.txt', 64)
-query_samples = 500 # how many queries we sample
+query_samples = 5000 # how many queries we sample
 
 d = 3
 k = 10
