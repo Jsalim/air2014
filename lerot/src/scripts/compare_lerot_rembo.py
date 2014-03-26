@@ -13,8 +13,8 @@ train_queries = query.load_queries('../../DATA/NP2004/Fold1/train.txt', 64)
 test_queries = query.load_queries('../../DATA/NP2004/Fold1/test.txt', 64)
 query_samples = 500 # how many queries we sample
 
-d = 2
-k = 1
+d = 3
+k = 10
 number_of_evaluation = query_samples / k
 
 # init user model, evaluation methods
@@ -62,15 +62,19 @@ for m in range(0, k):
 
 # write the result to file
 timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
-f = open("../../output/experiment2/" + timestamp + "_train.txt", "w")
-f.write("k: %s" % str(k) + "\n")
-f.write("d: %s" % str(d) + "\n")
-f.write("rem_ndcg_evaluation: %s" % str(rem_ndcg_evaluation_train) + "\n")
-f.write("full_ndcg_evaluation: %s" % str(full_ndcg_evaluation_train))
+f = open("../../output/experiment2/" + timestamp + "k_" + str(k) + "d_" + str(d) + "rem_train.txt", "w")
+f.write("%s" % str(rem_ndcg_evaluation_train) + "\n")
 f.close()
-f2 = open("../../output/experiment2/" + timestamp + "_test.txt", "w")
-f2.write("k: %s" % str(k) + "\n")
-f2.write("d: %s" % str(d) + "\n")
-f2.write("rem_ndcg_evaluation: %s" % str(rem_ndcg_evaluation_test) + "\n")
-f2.write("full_ndcg_evaluation: %s" % str(full_ndcg_evaluation_test))
-f2.close()
+
+f = open("../../output/experiment2/" + timestamp + "k_" + str(k) + "d_" + str(d) + "full_train.txt", "w")
+f.write("%s" % str(full_ndcg_evaluation_train) + "\n")
+f.close()
+
+f = open("../../output/experiment2/" + timestamp + "k_" + str(k) + "d_" + str(d) + "rem_test.txt", "w")
+f.write("%s" % str(rem_ndcg_evaluation_test) + "\n")
+f.close()
+
+f = open("../../output/experiment2/" + timestamp + "k_" + str(k) + "d_" + str(d) + "full_test.txt", "w")
+f.write("%s" % str(full_ndcg_evaluation_test) + "\n")
+f.close()
+
