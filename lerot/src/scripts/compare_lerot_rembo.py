@@ -20,7 +20,6 @@ number_of_evaluation = query_samples / k
 # init user model, evaluation methods
 user_model = environment.CascadeUserModel('--p_click 0:0.0,1:1 --p_stop 0:0.0,1:0.0')
 evaluation = evaluation.NdcgEval()
-full_learner = retrieval_system.ListwiseLearningSystem(64,'-w random -c comparison.ProbabilisticInterleave -r ranker.ProbabilisticRankingFunction -s 3 -d 0.1 -a 0.01')
 
 rem_ndcg_evaluation_train = []
 full_ndcg_evaluation_train = []
@@ -38,6 +37,7 @@ for m in range(0, k):
     # for each k, we have different A matrix
     # as mentioned on the REMBO paper
     rem_learner = retrieval_system.ListwiseLearningSystemREMBO(64,d,'-w random -c comparison.ProbabilisticInterleave -r ranker.ProbabilisticRankingFunctionREMBO -s 3 -d 0.1 -a 0.01')
+    full_learner = retrieval_system.ListwiseLearningSystem(64,'-w random -c comparison.ProbabilisticInterleave -r ranker.ProbabilisticRankingFunction -s 3 -d 0.1 -a 0.01')
 
     # start evaluation
     for i in range(0,number_of_evaluation):
