@@ -1,0 +1,19 @@
+There are 2 main programs in this package.
+
+1) Random Embedding in Bayesian Optimization
+To run the REMBO, just type in your terminal:
+python parisMain2.py (This is the latest version of REMBO)
+
+You may also modify the source to run  REMBO with other settings (e.g. different values of d and k).
+Open the parisMain2.py file and put your code there.
+We kindly ask you to backup the file before you make any changes.
+
+2) Random Embedding in DBGD
+Before you can use this program, copy your data to lerot/DATA directory, and make sure the data is correctly loaded in these 2 files: experiment_lerot_rembo.py and compare_lerot_rembo.py
+
+To run the REM-DBGD, follow this instruction below:
+
+- go to lerot/src/scripts
+- run python experiment_lerot_rembo.py. This command will run the experiment 1 and stores all results in txt files to the output directory.
+- run python compare_lerot_rembo.py. This comman will run the experiment 2 which compares the original DBGD with REM-DBGD. You may change the value of d and k by editing the file before you run it.
+
